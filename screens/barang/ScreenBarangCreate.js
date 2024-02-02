@@ -7,6 +7,8 @@ import useJWT from '../../hooks/useJWT';
 import { useState } from 'react';
 import useValidator from '../../hooks/useValidator';
 import { BASE_URL } from '../../settings';
+import WidgetCommonHeader from '../../widgets/commons/WidgetCommonHeader';
+import WidgetCommonAuth from '../../widgets/commons/WidgetCommonAuth';
 
 
 
@@ -53,26 +55,29 @@ const ScreenBarangCreate = ({ navigation }) => {
   return (
     <>
     <View>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content title="Tambah Barang" />
-      </Appbar.Header>
-      
-      <View style={styles.container}>
-        <View style={styles.wrapperControl}>
-          <TextInput
-            label="Nama"
-            autoCapitalize="none"
-            value={barang.nama}
-            onChangeText={text => handleChangeBarang(text, "nama")}
-          />
-          <WidgetCommonValidator messages={barangValidator.get('nama')} />
-        </View>
+      <WidgetCommonHeader 
+        back={(
+          <Appbar.BackAction onPress={navigation.goBack} />
+        )}
+        title={'Tambah Barang'}
+      />
+      <WidgetCommonAuth child={(
+        <View style={styles.container}>
+          <View style={styles.wrapperControl}>
+            <TextInput
+              label="Nama"
+              autoCapitalize="none"
+              value={barang.nama}
+              onChangeText={text => handleChangeBarang(text, "nama")}
+            />
+            <WidgetCommonValidator messages={barangValidator.get('nama')} />
+          </View>
 
-        <View style={styles.wrapperControl}>
-          <Button onPress={onBarangCreate} mode="contained">Simpan</Button>
+          <View style={styles.wrapperControl}>
+            <Button onPress={onBarangCreate} mode="contained">Simpan</Button>
+          </View>
         </View>
-      </View>
+      )} />
     </View>
     </>
   )

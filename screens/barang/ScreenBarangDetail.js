@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, } from 'react-native';
 import { Appbar, TextInput, Button } from 'react-native-paper';
 import WidgetCommonValidator from '../../widgets/commons/WidgetCommonValidator';
 import useMessage from '../../hooks/useMessage';
@@ -7,6 +7,8 @@ import useJWT from '../../hooks/useJWT';
 import { useEffect, useState } from 'react';
 import useValidator from '../../hooks/useValidator';
 import { BASE_URL } from '../../settings';
+import WidgetCommonHeader from '../../widgets/commons/WidgetCommonHeader';
+import WidgetCommonAuth from '../../widgets/commons/WidgetCommonAuth';
 
 const ScreenBarangDetail = ({navigation, route}) => {
   const jwt = useJWT()
@@ -96,27 +98,31 @@ const ScreenBarangDetail = ({navigation, route}) => {
   return (
     <>
     <View>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content title="Detail Barang" />
-      </Appbar.Header>
+      <WidgetCommonHeader 
+        back={(
+          <Appbar.BackAction onPress={navigation.goBack} />
+        )}
+        title="Detail Barang"
+      />
       
-      <View style={styles.container}>
-        <View style={styles.wrapperControl}>
-          <TextInput
-            label="Nama"
-            autoCapitalize="none"
-            value={barang.nama}
-            onChangeText={text => handleChangeBarang(text, "nama")}
-          />
-          <WidgetCommonValidator messages={barangValidator.get('nama')} />
-        </View>
+      <WidgetCommonAuth child={(
+        <View style={styles.container}>
+          <View style={styles.wrapperControl}>
+            <TextInput
+              label="Nama"
+              autoCapitalize="none"
+              value={barang.nama}
+              onChangeText={text => handleChangeBarang(text, "nama")}
+            />
+            <WidgetCommonValidator messages={barangValidator.get('nama')} />
+          </View>
 
-        <View style={[styles.wrapperControl, styles.buttonActions]}>
-          <Button onPress={onBarangDelete} mode="outlined">Hapus</Button>
-          <Button onPress={onBarangUpdate} mode="contained">Simpan</Button>
+          <View style={[styles.wrapperControl, styles.buttonActions]}>
+            <Button onPress={onBarangDelete} mode="outlined">Hapus</Button>
+            <Button onPress={onBarangUpdate} mode="contained">Simpan</Button>
+          </View>
         </View>
-      </View>
+      )} />
     </View>
     </>
   )

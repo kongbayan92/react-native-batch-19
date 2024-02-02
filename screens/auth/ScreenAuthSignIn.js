@@ -2,13 +2,14 @@ import { StyleSheet, View } from "react-native";
 import { Appbar, TextInput, Button } from "react-native-paper";
 import useJWT from "../../hooks/useJWT";
 import useHTTP from "../../hooks/useHTTP";
-import { useState } from "react";
-import { BASE_URL } from "../../settings";
+import { useContext, useState } from "react";
+import { BASE_URL, CONTEXT_APP } from "../../settings";
 import useMessage from "../../hooks/useMessage";
 import useValidator from "../../hooks/useValidator";
 import WidgetCommonValidator from "../../widgets/commons/WidgetCommonValidator";
 
 const ScreenAuthSignIn = ({navigation, route}) => {
+  const application = useContext(CONTEXT_APP)
   const jwt = useJWT()
   const http = useHTTP()
   const message = useMessage();
@@ -34,6 +35,7 @@ const ScreenAuthSignIn = ({navigation, route}) => {
       console.log(response.data);
       jwt.set(response.data.token)
       message.success(response)
+      application.setIsAuthenticated(true)
       navigation.navigate("ScreenBarangList")
     }).catch((error) => {
       message.error(error)
@@ -45,9 +47,6 @@ const ScreenAuthSignIn = ({navigation, route}) => {
   return (
     <>
       <View>
-        <Appbar>
-          <Appbar.Content title="Sign In" />
-        </Appbar>
         <View style={styles.container}>  
           <View style={styles.wrapperControl}>
             <TextInput

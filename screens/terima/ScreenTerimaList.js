@@ -2,30 +2,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import useHTTP from "../../hooks/useHTTP";
 import useJWT from "../../hooks/useJWT";
 import { ScrollView, Text, View, RefreshControl } from "react-native";
-import { List } from "react-native-paper"
+import { List, Badge } from "react-native-paper"
 import useMessage from "../../hooks/useMessage";
 import { BASE_URL } from "../../settings";
 import { Appbar } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import WidgetCommonHeader from "../../widgets/commons/WidgetCommonHeader";
 import WidgetCommonAuth from "../../widgets/commons/WidgetCommonAuth";
+import WidgetCommonStatus from "../../widgets/commons/WidgetCommonStatus";
  
-// TODO: infinite scroll
-// TODO: tambahkan search pada list
-const ScreenBarangList = ({navigation}) => {
-  
+
+const ScreenTerimaList = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
   const http = useHTTP();
   const jwt = useJWT();
   const message = useMessage();
 
-  const [daftarBarang, setDaftarBarang] = useState([]);
-  const [daftarBarangPagination, setDaftarBarangPagination] = useState({})
-  const barangSearch = useRef({value: ""})
-
-  const onBarangList = async (params) => {
-    const url = `${BASE_URL}/barang/`;
+  const [daftarTerima, setDaftarTerima] = useState([])
+  
+  const onTerimaList = async (params) => {
+    const url = `${BASE_URL}/terima/`;
     const config = {
       headers: {
         Authorization: await jwt.get(),
@@ -33,29 +30,21 @@ const ScreenBarangList = ({navigation}) => {
       params
     }
     http.privateHTTP.get(url, config).then((response) => {
-      console.log("uyee", BASE_URL)
       const { results, ...pagination } = response.data;
-      
-      setDaftarBarangPagination(pagination);
-      setDaftarBarang(results)
+      setDaftarTerima(results)
     }).catch((error) => {
       message.error(error);
     })
   }
 
-  const onRefresh = () => {
-    onBarangList()
-    console.log("direfresh....")
-  }
-
   useEffect(() => {
     if (isFocused) {
-      onBarangList()
+      onTerimaList()
     }
     
   }, [isFocused]);
 
-  // TODO: tambahankan infinite scroll
+
   return (
     <>
       <View>
@@ -63,10 +52,10 @@ const ScreenBarangList = ({navigation}) => {
           back={(
             <Appbar.BackAction onPress={navigation.goBack} />
           )}
-          title={"Barang"} 
+          title={"Terima"} 
           action={(
             <Appbar.Action icon="plus-circle-outline" onPress={() => {
-              navigation.navigate('ScreenBarangCreate')
+              navigation.navigate('ScreenTerimaCreate')
             }} />
           )}
         />
@@ -75,15 +64,18 @@ const ScreenBarangList = ({navigation}) => {
             style={{width: "100%"}}
             // onScroll={(e) => {console.log(e.contentOffset)}}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl refreshing={refreshing} onRefresh={() => {}} />
             }
           >
-            {daftarBarang.map((barang) => (
+            {daftarTerima.map((terima) => (
               <List.Item
-                onPress={() => navigation.navigate("ScreenBarangDetail", {id: barang._id})}
-                key={barang.id}
-                title={barang.nama}
+                // onPress={() => navigation.navigate("ScreenBarangDetail", {id: barang._id})}
+                key={terima.id}
+                title={terima.pelanggan.nama}
                 left={props => <List.Icon {...props} icon="folder-outline" />}
+                right={props => (
+                  <WidgetCommonStatus status={terima.status} />
+                )}
               />
             ))}
           </ScrollView>
@@ -94,4 +86,4 @@ const ScreenBarangList = ({navigation}) => {
   )
 }
 
-export default ScreenBarangList;
+export default ScreenTerimaList;

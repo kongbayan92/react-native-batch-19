@@ -10,7 +10,7 @@ const useMessage = () => {
 
   const success = (response) => {
     const { status, statusText } = response;
-    Alert.alert("Success", `${status}: ${statusText}`)
+    Alert.alert("Success", `${status}: ${statusText || "Berhasil"}`)
   }
 
   const confirmRemove = (action) => {
@@ -24,7 +24,18 @@ const useMessage = () => {
     ]);
   }
 
-  return {success, error, confirmRemove}
+  const confirmSignOut = (action) => {
+    Alert.alert('Are you sure?', 'Ketika sign out, mohon kembali lagi.', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Yes Sign Out!', onPress: action},
+    ]);
+  }
+
+  return {success, error, confirmRemove, confirmSignOut}
 }
 
 export default useMessage;

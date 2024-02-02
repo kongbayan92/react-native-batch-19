@@ -14,13 +14,16 @@ import ScreenAuthSignIn from './screens/auth/ScreenAuthSignIn';
 import ScreenBarangList from './screens/barang/ScreenBarangList';
 import ScreenBarangCreate from './screens/barang/ScreenBarangCreate';
 import ScreenBarangDetail from './screens/barang/ScreenBarangDetail';
+import ScreenMain from './screens/main/ScreenMain';
+import ScreenTerimaList from './screens/terima/ScreenTerimaList';
+import ScreenTerimaCreate from './screens/terima/SreenTerimaCreate';
 
 
 
 const Stack = createStackNavigator();
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
     <CONTEXT_APP.Provider value={{isAuthenticated, setIsAuthenticated}}>
@@ -28,9 +31,9 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen 
-            name='ScreenAuthSignIn'
-            component={ScreenAuthSignIn}
-            options={{ title: "Home", headerShown: false }}
+            name='ScreenMain'
+            component={ScreenMain}
+            options={{ title: "Main", headerShown: false }}
           />
           <Stack.Screen 
             name='ScreenBarangList'
@@ -46,6 +49,16 @@ const App = () => {
           <Stack.Screen 
             name='ScreenBarangDetail'
             component={ScreenBarangDetail}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name='ScreenTerimaList'
+            component={ScreenTerimaList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name='ScreenTerimaCreate'
+            component={ScreenTerimaCreate}
             options={{ headerShown: false }}
           />
           <Stack.Screen name="ScreenAbout" component={ScreenAbout} />
