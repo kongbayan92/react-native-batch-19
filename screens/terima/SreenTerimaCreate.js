@@ -62,6 +62,7 @@ const ScreenTerimaCreate = ({navigation}) => {
       const payload = {
         ...terima,
         pelanggan,
+        items: [...daftarItem]
       }
       http.privateHTTP.post(url, payload, config).then((response) => {
         message.success(config)
