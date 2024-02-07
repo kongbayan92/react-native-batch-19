@@ -17,6 +17,7 @@ import ScreenBarangDetail from './screens/barang/ScreenBarangDetail';
 import ScreenMain from './screens/main/ScreenMain';
 import ScreenTerimaList from './screens/terima/ScreenTerimaList';
 import ScreenTerimaCreate from './screens/terima/SreenTerimaCreate';
+import ScreenTerimaDetail from './screens/terima/ScreenTerimaDetail';
 
 
 
@@ -59,6 +60,11 @@ const App = () => {
           <Stack.Screen 
             name='ScreenTerimaCreate'
             component={ScreenTerimaCreate}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name='ScreenTerimaDetail'
+            component={ScreenTerimaDetail}
             options={{ headerShown: false }}
           />
           <Stack.Screen name="ScreenAbout" component={ScreenAbout} />
